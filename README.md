@@ -1,1 +1,1 @@
-# Chronom-tre
+# Chronomètre
