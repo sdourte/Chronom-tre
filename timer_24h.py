@@ -34,7 +34,7 @@ class ChronometerApp:
             self.background_label.configure(image=self.background_image)
 
     def create_widgets(self):
-        input_wanted = input("Voulez-vous choisir le temps (oui/non) ? ")
+        
         if input_wanted == "oui":
             self.input_timer()
         else:
@@ -105,8 +105,24 @@ class ChronometerApp:
         input_time = input_time.split(":")
         self.max_duration = timedelta(hours=int(input_time[0]), minutes=int(input_time[1]), seconds=int(input_time[2]))
 
+def toggle_fullscreen(event):
+    # Vérifiez si la fenêtre est actuellement en mode plein écran
+    if root.attributes('-fullscreen'):
+        # Quittez le mode plein écran
+        root.attributes('-fullscreen', False)
+    else:
+        # Mettez la fenêtre en mode plein écran
+        root.attributes('-fullscreen', True)
+
 if __name__ == "__main__":
+    input_wanted = input("Voulez-vous choisir le temps (oui/non) ? ")
     root = tk.Tk()
+    # Mettez la fenêtre en plein écran au départ
+    root.attributes('-fullscreen', True)
+
+    # Liez la touche "Échap" à la fonction toggle_fullscreen
+    root.bind('<Escape>', toggle_fullscreen)
+    
     root.geometry("960x540")
     app = ChronometerApp(root)
     root.mainloop()
