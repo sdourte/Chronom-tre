@@ -40,31 +40,39 @@ class ChronometerApp:
         else:
             self.max_duration = timedelta(hours=24)
             
-        global_frame = tk.Frame(self.master, bg="white", highlightthickness=5, highlightbackground="#2E338D", bd=10, padx=10, pady=10)
+        global_frame = tk.Frame(self.master, bg="white", highlightthickness=8, highlightbackground="#2E338D", bd=10, padx=10, pady=10)
 
-        global_canva = tk.Canvas(global_frame, bg="white")
+        global_canva = tk.Canvas(global_frame, bg="white", highlightbackground="white")
 
-        title = tk.Label(global_canva, bg="white", text="Chronomètre", font=('Courier', 20))
-        title.grid(row=0, column=0)
+        #title = tk.Label(global_canva, bg="white", text="Chronomètre", font=('Courier', 20))
+        #title.grid(row=0, column=0)
 
-        self.timer_label = tk.Label(global_canva, bg="white", font=('Helvetica', 150))
+        self.timer_label = tk.Label(global_canva, bg="white", fg="#2E338D", font=('Helvetica', 150))
         self.timer_label.grid(row=1, column=0, pady=10)
 
         self.update_timer_display()
         
-        button_canva = tk.Canvas(global_canva)
+        button_canva = tk.Canvas(global_canva, bg="white", highlightbackground="white")
 
-        start_button = tk.Button(button_canva, text="Start", command=self.start_timer)
-        start_button.grid(row=0, column=0)
+        start_button = tk.Button(button_canva, text="Start", command=self.start_timer, font=("Arial", 20), bg="#2E338D", fg="white")
+        start_button.grid(row=0, column=0, padx=10)
+        start_button.bind('<Enter>', lambda event, button=start_button: self.on_enter(event, button, "#2E338D", "#DE5B35"))
+        start_button.bind('<Leave>', lambda event, button=start_button: self.on_leave(event, button, "#2E338D", "white"))
 
-        stop_button = tk.Button(button_canva, text="Stop", command=self.stop_timer)
-        stop_button.grid(row=0, column=1)
+        stop_button = tk.Button(button_canva, text="Stop", command=self.stop_timer, font=("Arial", 20), bg="#2E338D", fg="white")
+        stop_button.grid(row=0, column=1, padx=10)
+        stop_button.bind('<Enter>', lambda event, button=stop_button: self.on_enter(event, button, "#2E338D", "#DE5B35"))
+        stop_button.bind('<Leave>', lambda event, button=stop_button: self.on_leave(event, button, "#2E338D", "white"))
 
-        reset_button = tk.Button(button_canva, text="Reset", command=self.reset_timer)
-        reset_button.grid(row=0, column=2)
+        reset_button = tk.Button(button_canva, text="Reset", command=self.reset_timer, font=("Arial", 20), bg="#2E338D", fg="white")
+        reset_button.grid(row=0, column=2, padx=10)
+        reset_button.bind('<Enter>', lambda event, button=reset_button: self.on_enter(event, button, "#2E338D", "#DE5B35"))
+        reset_button.bind('<Leave>', lambda event, button=reset_button: self.on_leave(event, button, "#2E338D", "white"))
 
-        reprendre_button = tk.Button(button_canva, text="Reprendre", command=self.reprendre_timer)
-        reprendre_button.grid(row=0, column=3)
+        reprendre_button = tk.Button(button_canva, text="Reprendre", command=self.reprendre_timer, font=("Arial", 20), bg="#2E338D", fg="white")
+        reprendre_button.grid(row=0, column=3, padx=10)
+        reprendre_button.bind('<Enter>', lambda event, button=reprendre_button: self.on_enter(event, button, "#2E338D", "#DE5B35"))
+        reprendre_button.bind('<Leave>', lambda event, button=reprendre_button: self.on_leave(event, button, "#2E338D", "white"))
         
         global_frame.place(relx=0.09, rely=0.51)  # Placez la Frame en bas à gauche
         global_canva.grid(row=0, column=0)  # Placez le canva en bas à gauche
@@ -114,6 +122,12 @@ class ChronometerApp:
         input_time = input("Entrez le nombre de temps à chronométrer (xx:xx:xx): ")
         input_time = input_time.split(":")
         self.max_duration = timedelta(hours=int(input_time[0]), minutes=int(input_time[1]), seconds=int(input_time[2]))
+
+    def on_enter(self, event, button, bg_color, fg_color):
+        button.config(bg=bg_color, fg=fg_color)
+
+    def on_leave(self, event, button, bg_color, fg_color):
+        button.config(bg=bg_color, fg=fg_color)
 
 def toggle_fullscreen(event):
     # Vérifiez si la fenêtre est actuellement en mode plein écran
