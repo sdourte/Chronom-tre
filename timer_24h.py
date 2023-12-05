@@ -44,9 +44,6 @@ class ChronometerApp:
 
         global_canva = tk.Canvas(global_frame, bg="white", highlightbackground="white")
 
-        #title = tk.Label(global_canva, bg="white", text="Chronomètre", font=('Courier', 20))
-        #title.grid(row=0, column=0)
-
         self.timer_label = tk.Label(global_canva, bg="white", fg="#2E338D", font=('Helvetica', 150))
         self.timer_label.grid(row=1, column=0, pady=10)
 
@@ -84,7 +81,11 @@ class ChronometerApp:
         formatted_time = self.format_timedelta(self.remaining_time)
         self.timer_label.config(text=formatted_time)
 
-        if self.remaining_time > timedelta() and self.running:
+        # Si c'est la fin du chrono, on affiche la pop up de victoire
+        if self.remaining_time <= timedelta():
+            self.show_end_popup()
+        # Sinon on continue
+        elif self.remaining_time > timedelta() and self.running:
             self.master.after(1000, self.update_timer_display)
         elif not self.running:
             self.master
@@ -128,6 +129,14 @@ class ChronometerApp:
 
     def on_leave(self, event, button, bg_color, fg_color):
         button.config(bg=bg_color, fg=fg_color)
+        
+    def show_end_popup(self):
+        popup = tk.Toplevel(self.master)
+        popup.title("Fin du Chronomètre")
+        popup.geometry("300x200")
+
+        label = tk.Label(popup, text="Le défi est terminé !", font=('Helvetica', 32))
+        label.pack(pady=10)
 
 def toggle_fullscreen(event):
     # Vérifiez si la fenêtre est actuellement en mode plein écran
