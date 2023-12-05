@@ -3,6 +3,7 @@ import tkinter as tk
 from datetime import datetime, timedelta
 import cv2
 from PIL import Image, ImageTk
+import pygame
 
 class ChronometerApp:
     def __init__(self, master):
@@ -134,17 +135,14 @@ class ChronometerApp:
     def show_end_popup(self):
         popup = tk.Toplevel(self.master)
         popup.title("Fin du Chronomètre")
-        popup.geometry("1067x600")
+        popup.geometry("1067x600+220+120")# On place la pop up avec +x+y
         
-        # Centrer la fenêtre pop-up
-        """popup.update_idletasks()
-        width = popup.winfo_reqwidth()
-        height = popup.winfo_reqheight()
-        x = (popup.winfo_screenwidth() - width) // 2
-        y = (popup.winfo_screenheight() - height) // 2
-        popup.geometry(f"{width}x{height}+{x}+{y}")"""
+        # Charger et jouer le fichier MP3
+        pygame.mixer.init()
+        pygame.mixer.music.load("videos/Applause Crowd Cheering sound effect.mp3")
+        pygame.mixer.music.play()
         
-        video_path = "videos/vidéo de fin de défi moyen.mp4"
+        video_path = "videos/vidéo de fin de défi moyen + longue.mp4"
 
         cap = cv2.VideoCapture(video_path)
 
@@ -168,11 +166,13 @@ class ChronometerApp:
                 video_canvas.create_image(0, 0, anchor=tk.NW, image=img)
                 video_canvas.image = img
 
-                # Appelez la fonction récursivement après 33 millisecondes (environ 30 images par seconde)
-                popup.after(33, update_frame)
+                # Appelez la fonction récursivement après 10 millisecondes (environ 30 images par seconde)
+                popup.after(5, update_frame)
             else:
                 # Fermez la fenêtre pop-up une fois la vidéo terminée
                 popup.destroy()
+                # Fermer la musique lorsque la vidéo est terminée
+                pygame.mixer.music.stop()
 
         # Commencez l'animation en appelant la fonction update_frame
         update_frame()
