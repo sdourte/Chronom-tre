@@ -133,7 +133,7 @@ class ChronometerApp:
     def show_end_popup(self):
         popup = tk.Toplevel(self.master)
         popup.title("Fin du Chronomètre")
-        popup.geometry("300x200")
+        popup.geometry("960x540")
 
         label = tk.Label(popup, text="Le défi est terminé !", font=('Helvetica', 32))
         label.pack(pady=10)
