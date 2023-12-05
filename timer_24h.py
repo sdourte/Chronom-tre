@@ -40,13 +40,15 @@ class ChronometerApp:
         else:
             self.max_duration = timedelta(hours=24)
             
-        global_canva = tk.Canvas(self.master)
+        global_frame = tk.Frame(self.master, bg="white", highlightthickness=5, highlightbackground="#2E338D", bd=10, padx=10, pady=10)
 
-        title = tk.Label(global_canva, text="Chronomètre", font=('Helvetica', 20))
+        global_canva = tk.Canvas(global_frame, bg="white")
+
+        title = tk.Label(global_canva, bg="white", text="Chronomètre", font=('Courier', 20))
         title.grid(row=0, column=0)
 
-        self.timer_label = tk.Label(global_canva, font=('Helvetica', 150))
-        self.timer_label.grid(row=1, column=0)
+        self.timer_label = tk.Label(global_canva, bg="white", font=('Helvetica', 150))
+        self.timer_label.grid(row=1, column=0, pady=10)
 
         self.update_timer_display()
         
@@ -64,7 +66,8 @@ class ChronometerApp:
         reprendre_button = tk.Button(button_canva, text="Reprendre", command=self.reprendre_timer)
         reprendre_button.grid(row=0, column=3)
         
-        global_canva.place(relx=0.1, rely=0.55)  # Placez le canva en bas à gauche
+        global_frame.place(relx=0.09, rely=0.51)  # Placez la Frame en bas à gauche
+        global_canva.grid(row=0, column=0)  # Placez le canva en bas à gauche
         button_canva.grid(row=2, column=0)
 
     def update_timer_display(self):
