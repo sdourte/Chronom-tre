@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from datetime import datetime, timedelta
+import cv2
 from PIL import Image, ImageTk
 
 class ChronometerApp:
@@ -133,10 +134,48 @@ class ChronometerApp:
     def show_end_popup(self):
         popup = tk.Toplevel(self.master)
         popup.title("Fin du Chronomètre")
-        popup.geometry("960x540")
+        popup.geometry("1067x600")
+        
+        # Centrer la fenêtre pop-up
+        """popup.update_idletasks()
+        width = popup.winfo_reqwidth()
+        height = popup.winfo_reqheight()
+        x = (popup.winfo_screenwidth() - width) // 2
+        y = (popup.winfo_screenheight() - height) // 2
+        popup.geometry(f"{width}x{height}+{x}+{y}")"""
+        
+        video_path = "videos/vidéo de fin de défi moyen.mp4"
 
-        label = tk.Label(popup, text="Le défi est terminé !", font=('Helvetica', 32))
-        label.pack(pady=10)
+        cap = cv2.VideoCapture(video_path)
+
+        # Obtenez les dimensions du cadre vidéo
+        width = int(cap.get(3))
+        height = int(cap.get(4))
+
+        video_canvas = tk.Canvas(popup, width=width, height=height)
+        video_canvas.pack()
+
+        # Définissez une fonction pour mettre à jour le cadre vidéo
+        def update_frame():
+            ret, frame = cap.read()
+            if ret:
+                # Convertissez le cadre OpenCV en Image Tkinter
+                img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                img = Image.fromarray(img)
+                img = ImageTk.PhotoImage(img)
+
+                # Mettez à jour le canevas avec le nouvel image
+                video_canvas.create_image(0, 0, anchor=tk.NW, image=img)
+                video_canvas.image = img
+
+                # Appelez la fonction récursivement après 33 millisecondes (environ 30 images par seconde)
+                popup.after(33, update_frame)
+            else:
+                # Fermez la fenêtre pop-up une fois la vidéo terminée
+                popup.destroy()
+
+        # Commencez l'animation en appelant la fonction update_frame
+        update_frame()
 
 def toggle_fullscreen(event):
     # Vérifiez si la fenêtre est actuellement en mode plein écran
