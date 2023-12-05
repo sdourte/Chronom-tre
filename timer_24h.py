@@ -39,26 +39,33 @@ class ChronometerApp:
             self.input_timer()
         else:
             self.max_duration = timedelta(hours=24)
+            
+        global_canva = tk.Canvas(self.master)
 
-        title = tk.Label(self.master, text="Chronomètre", font=('Helvetica', 20))
-        title.pack()
+        title = tk.Label(global_canva, text="Chronomètre", font=('Helvetica', 20))
+        title.grid(row=0, column=0)
 
-        self.timer_label = tk.Label(self.master, font=('Helvetica', 150))
-        self.timer_label.pack()
+        self.timer_label = tk.Label(global_canva, font=('Helvetica', 150))
+        self.timer_label.grid(row=1, column=0)
 
         self.update_timer_display()
+        
+        button_canva = tk.Canvas(global_canva)
 
-        start_button = tk.Button(self.master, text="Start", command=self.start_timer)
-        start_button.pack(pady=10)
+        start_button = tk.Button(button_canva, text="Start", command=self.start_timer)
+        start_button.grid(row=0, column=0)
 
-        stop_button = tk.Button(self.master, text="Stop", command=self.stop_timer)
-        stop_button.pack(pady=10)
+        stop_button = tk.Button(button_canva, text="Stop", command=self.stop_timer)
+        stop_button.grid(row=0, column=1)
 
-        reset_button = tk.Button(self.master, text="Reset", command=self.reset_timer)
-        reset_button.pack(pady=10)
+        reset_button = tk.Button(button_canva, text="Reset", command=self.reset_timer)
+        reset_button.grid(row=0, column=2)
 
-        reprendre_button = tk.Button(self.master, text="Reprendre", command=self.reprendre_timer)
-        reprendre_button.pack(pady=10)
+        reprendre_button = tk.Button(button_canva, text="Reprendre", command=self.reprendre_timer)
+        reprendre_button.grid(row=0, column=3)
+        
+        global_canva.place(relx=0.1, rely=0.55)  # Placez le canva en bas à gauche
+        button_canva.grid(row=2, column=0)
 
     def update_timer_display(self):
         elapsed_time = datetime.now() - self.start_time
